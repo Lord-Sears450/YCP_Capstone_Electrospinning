@@ -1,0 +1,15 @@
+#!/bin/bash
+CHANNEL=0
+CHIP=pwmchip0
+PWM0=pwm0
+PWM1=pwm1
+
+echo 0 > /sys/class/pwm/$CHIP/export
+echo 1 > /sys/class/pwm/$CHIP/export
+sleep 1
+echo 25000 > /sys/class/pwm/$CHIP/$PWM0/period
+echo 25000 > /sys/class/pwm/$CHIP/$PWM1/period
+echo 2500 > /sys/class/pwm/$CHIP/$PWM0/duty_cycle
+echo 2500 > /sys/class/pwm/$CHIP/$PWM1/duty_cycle
+echo 1 > /sys/class/pwm/$CHIP/$PWM0/enable
+echo 1 > /sys/class/pwm/$CHIP/$PWM1/enable
