@@ -6,7 +6,10 @@ import time
 import random
 from subprocess import call
 import PWM
+import read_sensor
 import globalVar
+
+
 
 def init_GUI():
     ## GUI creation
@@ -137,11 +140,11 @@ def init_GUI():
                                 padx = 5,
                                 pady = 5,
                                 wrap = False)
-        temp_min_label.grid(row = 0, column = 2)
+        temp_min_label.grid(row = 0, column = 3)
         ## Temp Set
         temp_max = IntVar(temp)
         temp_min = IntVar(temp)
-        temp_max.set(75)
+        temp_max.set(35)
         temp_min.set(10)
         def update_temp():
             temp_min_upper = int(temp_max_box.get()) - 1
@@ -150,7 +153,7 @@ def init_GUI():
             temp_max_box.config(from_ = temp_max_lower)
         temp_max_box = create_widget(temp,
                             tk.Spinbox,
-                            from_ = 50,
+                            from_ = 0,
                             to = 100,
                             textvariable = temp_max,
                             command = update_temp,
@@ -170,7 +173,7 @@ def init_GUI():
         temp_min_box = create_widget(temp,
                             tk.Spinbox,
                             from_ = 0,
-                            to = 50,
+                            to = 100,
                             textvariable = temp_min,
                             command = update_temp,
                             width = 10,
@@ -183,7 +186,29 @@ def init_GUI():
                             bd=3, 
                             justify="center", 
                             wrap=True)
-        temp_min_box.grid(row = 0, column = 3)
+        temp_min_box.grid(row = 0, column = 4)
+        temp_min_units = create_widget(temp,
+                                tk.Label,
+                                text = u'\u2103',
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        temp_max_units = create_widget(temp,
+                                tk.Label,
+                                text = u'\u2103',
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        temp_min_units.grid(row = 0, column = 2)
+        temp_max_units.grid(row = 0, column = 5)
         ## End Temperature ##
         
         ## Humidity ##
@@ -215,7 +240,7 @@ def init_GUI():
                                 padx = 5,
                                 pady = 5,
                                 wrap = False)
-        hum_min_label.grid(row = 0, column = 2)
+        hum_min_label.grid(row = 0, column = 3)
         ## Hum Set
         hum_max = IntVar(temp)
         hum_min = IntVar(temp)
@@ -248,7 +273,7 @@ def init_GUI():
         hum_min_box = create_widget(hum,
                             tk.Spinbox,
                             from_ = 0,
-                            to = 50,
+                            to = 100,
                             textvariable = hum_min,
                             command = update_hum,
                             width = 10,
@@ -261,7 +286,29 @@ def init_GUI():
                             bd=3, 
                             justify="center", 
                             wrap=True)
-        hum_min_box.grid(row = 0, column = 3)
+        hum_min_box.grid(row = 0, column = 4)
+        hum_min_units = create_widget(hum,
+                                tk.Label,
+                                text = "rH",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        hum_max_units = create_widget(hum,
+                                tk.Label,
+                                text = "rH",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        hum_min_units.grid(row = 0, column = 2)
+        hum_max_units.grid(row = 0, column = 5)
         ## End Humidity ##
         
         ## Pressure ##
@@ -293,12 +340,12 @@ def init_GUI():
                                 padx = 5,
                                 pady = 5,
                                 wrap = False)
-        press_min_label.grid(row = 0, column = 2)
+        press_min_label.grid(row = 0, column = 3)
         ## Press Set
         press_max = IntVar(press)
         press_min = IntVar(press)
-        press_max.set(75)
-        press_min.set(10)
+        press_max.set(1100)
+        press_min.set(950)
         def update_press():
             press_min_upper = int(press_max_box.get()) - 1
             press_min_box.config(to = press_min_upper)
@@ -306,8 +353,8 @@ def init_GUI():
             press_max_box.config(from_ = press_max_lower)
         press_max_box = create_widget(press,
                             tk.Spinbox,
-                            from_ = 50,
-                            to = 100,
+                            from_ = 800,
+                            to = 1300,
                             textvariable = press_max,
                             command = update_press,
                             width = 10,
@@ -325,8 +372,8 @@ def init_GUI():
         press_max_box.grid(row = 0, column = 1)
         press_min_box = create_widget(press,
                             tk.Spinbox,
-                            from_ = 0,
-                            to = 50,
+                            from_ = 800,
+                            to = 1300,
                             textvariable = press_min,
                             command = update_press,
                             width = 10,
@@ -339,7 +386,29 @@ def init_GUI():
                             bd=3, 
                             justify="center", 
                             wrap=True)
-        press_min_box.grid(row = 0, column = 3)
+        press_min_box.grid(row = 0, column = 4)
+        press_min_units = create_widget(press,
+                                tk.Label,
+                                text = "hPa",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        press_max_units = create_widget(press,
+                                tk.Label,
+                                text = "hPa",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        press_min_units.grid(row = 0, column = 2)
+        press_max_units.grid(row = 0, column = 5)
         ## End Pressure ##
         
         ## Air Speed / Wind ##
@@ -371,12 +440,12 @@ def init_GUI():
                                 padx = 5,
                                 pady = 5,
                                 wrap = False)
-        wind_min_label.grid(row = 0, column = 2)
+        wind_min_label.grid(row = 0, column = 3)
         ## Air Speed Set
         wind_max = IntVar(wind)
         wind_min = IntVar(wind)
-        wind_max.set(75)
-        wind_min.set(10)
+        wind_max.set(25)
+        wind_min.set(2)
         def update_wind():
             wind_min_upper = int(wind_max_box.get()) - 1
             wind_min_box.config(to = wind_min_upper)
@@ -384,8 +453,8 @@ def init_GUI():
             wind_max_box.config(from_ = wind_max_lower)
         wind_max_box = create_widget(wind,
                             tk.Spinbox,
-                            from_ = 50,
-                            to = 100,
+                            from_ = 0,
+                            to = 30,
                             textvariable = wind_max,
                             command = update_wind,
                             width = 10,
@@ -404,7 +473,7 @@ def init_GUI():
         wind_min_box = create_widget(wind,
                             tk.Spinbox,
                             from_ = 0,
-                            to = 50,
+                            to = 30,
                             textvariable = wind_min,
                             command = update_wind,
                             width = 10,
@@ -417,7 +486,29 @@ def init_GUI():
                             bd=3, 
                             justify="center", 
                             wrap=True)
-        wind_min_box.grid(row = 0, column = 3)
+        wind_min_box.grid(row = 0, column = 4)
+        wind_min_units = create_widget(wind,
+                                tk.Label,
+                                text = "m/s",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        wind_max_units = create_widget(wind,
+                                tk.Label,
+                                text = "m/s",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        wind_min_units.grid(row = 0, column = 2)
+        wind_max_units.grid(row = 0, column = 5)
         ## End Air Speed / Wind ##
         
         def set_range():
@@ -475,11 +566,171 @@ def init_GUI():
                         overrelief = RAISED,
                         padx = 10,
                         pady =5,
-                        width = 10,
+                        width = 15,
                         wraplength = 100)
     # set range button placement
-    set_range_button.grid(row = 0, column = 0)
+    set_range_button.grid(row = 1, column = 0)
     ## end set range ##
+    
+    ## Set Pump ##
+    # set popup size
+    pump_popup_width = int(GUI.winfo_screenwidth() * 0.45)
+    pump_popup_height = int(GUI.winfo_screenheight() * 0.25)
+    # define popup
+    def pump_popup():
+        pump_popup = tk.Tk() 
+        pump_popup.geometry(f"{pump_popup_width}x{pump_popup_height}")
+        pump_popup.overrideredirect(True)
+        pump_popup.wm_sizefrom()
+        center(pump_popup)
+        pump_popup.title("Set Pump Rate")
+        pump_popup.columnconfigure(0, weight = 1)
+        pump_popup.columnconfigure(1, weight = 1)
+        pump_popup.columnconfigure(2, weight = 1)
+        pump_popup.columnconfigure(3, weight = 1)
+        pump_popup.rowconfigure(0, weight = 1)
+        pump_popup.rowconfigure(1, weight = 2) ## temperature
+        pump_popup.rowconfigure(2, weight = 1)
+        
+        ## Pump ##
+        pump = create_widget(pump_popup,
+                            tk.Frame,
+                            bg="lightgrey", 
+                            width = 50,
+                            height = 10,
+                            bd = 3)
+        pump.grid(row = 1, column = 0)
+        pump_label = create_widget(pump,
+                                tk.Label,
+                                text = "Set Pump Rate:",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 20,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        pump_label.grid(row = 1, column = 0)
+        ## Pump Set
+        def update_pump():
+            temp_min_upper = int(temp_max_box.get()) - 1
+            temp_min_box.config(to = temp_min_upper)
+            temp_max_lower = int(temp_min_box.get()) + 1
+            temp_max_box.config(from_ = temp_max_lower)
+        pump_box = create_widget(pump,
+                            tk.Spinbox,
+                            from_ = 50,
+                            to = 100,
+                            textvariable = pump,
+                            command = update_pump,
+                            width = 10,
+                            relief = "sunken",
+                            font=("Arial", 24), 
+                            bg="lightgrey", 
+                            fg="blue",
+                            state="normal",
+                            repeatdelay = 500,
+                            repeatinterval = 100, 
+                            cursor="hand2", 
+                            bd=3, 
+                            justify="center", 
+                            wrap=True)
+        pump_box.grid(row = 1, column = 1)
+        
+        pump_units = create_widget(pump,
+                                tk.Label,
+                                text = "mL/hr",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 5,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+        pump_units.grid(row = 1, column = 2)
+        ## End Pump ##
+        
+        def set_pump_rate():
+            globalVar.pump = pump_box.get()
+            pump_popup.destroy()
+        #set button creation
+        set_button = create_widget(pump_popup,
+            tk.Button,
+            text = 'Set Pump Rate',
+            command = set_pump_rate,
+            activebackground = 'red',
+            activeforeground = 'white',
+            anchor = CENTER,
+            bd = 3,
+            bg = 'lightgray',
+            cursor = 'hand2',
+            disabledforeground = 'gray',
+            fg = 'black',
+            font = ('Arial', 12),
+            height = 2,
+            highlightbackground = 'black',
+            highlightcolor = 'green',
+            highlightthickness = 2,
+            justify = CENTER,
+            overrelief = RAISED,
+            padx = 10,
+            pady =5,
+            width = 10,
+            wraplength = 100)
+        # set button placement
+        set_button.grid(row = 1, column = 3)
+    pump_button = create_widget(GUI,
+                        tk.Button,
+                        text = 'Set Pump Rate',
+                        command = pump_popup,
+                        activebackground = 'red',
+                        activeforeground = 'white',
+                        anchor = CENTER,
+                        bd = 3,
+                        bg = 'lightgray',
+                        cursor = 'hand2',
+                        disabledforeground = 'gray',
+                        fg = 'black',
+                        font = ('Arial', 12),
+                        height = 2,
+                        highlightbackground = 'black',
+                        highlightcolor = 'green',
+                        highlightthickness = 2,
+                        justify = CENTER,
+                        overrelief = RAISED,
+                        padx = 10,
+                        pady =5,
+                        width = 15,
+                        wraplength = 100)
+    # set range button placement
+    pump_button.grid(row = 2, column = 0)
+    ## end set pump ##
+    
+    save_button = create_widget(GUI,
+                        tk.Button,
+                        text = 'Save Test Log',
+                        command = pump_popup,
+                        activebackground = 'red',
+                        activeforeground = 'white',
+                        anchor = CENTER,
+                        bd = 3,
+                        bg = 'lightgray',
+                        cursor = 'hand2',
+                        disabledforeground = 'gray',
+                        fg = 'black',
+                        font = ('Arial', 12),
+                        height = 2,
+                        highlightbackground = 'black',
+                        highlightcolor = 'green',
+                        highlightthickness = 2,
+                        justify = CENTER,
+                        overrelief = RAISED,
+                        padx = 10,
+                        pady =5,
+                        width = 15,
+                        wraplength = 100)
+    # set range button placement
+    save_button.grid(row = 3, column = 0)
     
     ## world clock ##
     def time():
@@ -495,14 +746,13 @@ def init_GUI():
     ## end world clock #
     
     ## humidity ##
-    # hum_list = range(0, 100)
     humidity_text = tk.StringVar()
     def humidity():
-        # num = random.choice(hum_list)
-        num = "Null"
-        hum_text = f'Humidity: {num}%'
+        num = globalVar.hum
+        hum_text = f'Humidity: {num:.2f} rH'
         humidity_text.set(hum_text)
         GUI.update()
+        read_sensor.readPHT()
         sensor_hum.after(2000, humidity)
     sensor_hum = create_widget(GUI,
                                tk.Label,
@@ -512,7 +762,7 @@ def init_GUI():
                                bg = 'lightblue',
                                bd = 3,
                                height = 2,
-                               width = 17,
+                               width = 22,
                                highlightthickness = 2,
                                highlightbackground = 'black',
                                anchor = W,
@@ -522,24 +772,13 @@ def init_GUI():
     ## end humidity ##
     
     ## temperature ##
-    # temp_list = range(32, 120)
     temperature_text = tk.StringVar()
-    degree = u'\u2109'
+    degree = u'\u2103'
     def temperature():
-        # num2 = random.choice(temp_list)
-        num2 = "Null"
-        temp_text = f'Temperature: {num2}{degree}'
+        num2 = globalVar.temp
+        temp_text = f'Temperature: {num2:.2f} {degree}'
         temperature_text.set(temp_text)
-        # if num2 > 94:
-        #     if globalVar.duty_exhaust < 50:
-        #         new_duty = globalVar.duty_exhaust + 5
-        #         # on_duty_change(new_duty)
-        # elif num2 < 52:
-        #     if globalVar.duty_exhaust > 20:
-        #         new_duty = globalVar.duty_exhaust -5
-        #         # on_duty_change(new_duty)
-        GUI.update()
-        sensor_hum.after(2000, temperature)
+        sensor_temp.after(2000, temperature)
     sensor_temp = create_widget(GUI,
                                 tk.Label,
                                 textvariable = temperature_text,
@@ -548,7 +787,7 @@ def init_GUI():
                                 bg = 'lightblue',
                                 bd = 3,
                                 height = 2,
-                                width = 17,
+                                width = 22,
                                 highlightthickness = 2,
                                 highlightbackground = 'black',
                                 anchor = W,
@@ -557,13 +796,117 @@ def init_GUI():
     temperature()
     ## end temperature ##
     
+    ## pressure ##
+    pressure_text = tk.StringVar()
+    def pressure():
+        num3 = globalVar.press
+        press_text = f'Pressure: {num3:.2f} hPa'
+        pressure_text.set(press_text)
+        sensor_press.after(2000, pressure)
+    sensor_press = create_widget(GUI,
+                                tk.Label,
+                                textvariable = pressure_text,
+                                font = ('Arial', 16, 'bold'),
+                                fg = 'black',
+                                bg = 'lightblue',
+                                bd = 3,
+                                height = 2,
+                                width = 22,
+                                highlightthickness = 2,
+                                highlightbackground = 'black',
+                                anchor = W,
+                                padx = 15)
+    sensor_press.grid(row = 3, column = 4)
+    pressure()
+    ## end pressure ##
+    
+    ## wind ##
+    wind_text = tk.StringVar()
+    def wind():
+        num4 = globalVar.wind
+        wind_speed_text = f'Air Speed: {num4:.2f} m/s'
+        wind_text.set(wind_speed_text)
+        sensor_wind.after(2000, wind)
+    sensor_wind = create_widget(GUI,
+                                tk.Label,
+                                textvariable = wind_text,
+                                font = ('Arial', 16, 'bold'),
+                                fg = 'black',
+                                bg = 'lightblue',
+                                bd = 3,
+                                height = 2,
+                                width = 22,
+                                highlightthickness = 2,
+                                highlightbackground = 'black',
+                                anchor = W,
+                                padx = 15)
+    sensor_wind.grid(row = 3, column = 2)
+    wind()
+    ## end wind ##
+    
+    ## intake ##
+    intake_text = tk.StringVar()
+    def intake():
+        num5 = globalVar.intake
+        intake_fan_text = f'Intake Fan: {num5:.2f} rpm'
+        intake_text.set(intake_fan_text)
+        intake_fan.after(2000, intake)
+    intake_fan = create_widget(GUI,
+                                tk.Label,
+                                textvariable = intake_text,
+                                font = ('Arial', 16, 'bold'),
+                                fg = 'black',
+                                bg = 'lightblue',
+                                bd = 3,
+                                height = 2,
+                                width = 22,
+                                highlightthickness = 2,
+                                highlightbackground = 'black',
+                                anchor = W,
+                                padx = 15)
+    intake_fan.grid(row = 1, column = 2)
+    intake()
+    ## end intake ##
+    
+    ## intake ##
+    exhaust_text = tk.StringVar()
+    def exhaust():
+        num6 = globalVar.exhaust
+        exhaust_fan_text = f'Exhaust Fan: {num6:.2f} rpm'
+        exhaust_text.set(exhaust_fan_text)
+        exhaust_fan.after(2000, exhaust)
+    exhaust_fan = create_widget(GUI,
+                                tk.Label,
+                                textvariable = exhaust_text,
+                                font = ('Arial', 16, 'bold'),
+                                fg = 'black',
+                                bg = 'lightblue',
+                                bd = 3,
+                                height = 2,
+                                width = 22,
+                                highlightthickness = 2,
+                                highlightbackground = 'black',
+                                anchor = W,
+                                padx = 15)
+    exhaust_fan.grid(row = 2, column = 2)
+    exhaust()
+    ## end exhaust ##
+    
     GUI.mainloop()
     
-init_GUI()
 PWM.initPWM()
-#while True:
-#    try:
-#        init_GUI()
-#    except Exception as e:
-#       print(f"Waiting for GUI to become available: {e}")
-#        time.sleep(0.5)
+read_sensor.readPHT()
+globalVar.startTime = strftime('%Y.%m.%d-%H:%M:%S')
+file = open(f"{globalVar.startTime}.txt", "x")
+init_GUI()
+
+## Test code for PWM duty change
+    # PWM.changeDuty(5000,0)
+# changeDuty(duty,pin)
+# duty is out of 25000, frequency of the PWM for fan
+# duty = 5000 = 20%
+# Pin 12 = 0
+# Pin 13 = 1
+# duty should change when sensor vals fall outside user set range
+# minimum range size should be tested and set in code, to be unchanged by user (i.e. no less than 10rH difference between min and max)
+# duty should change slowly to reduce turbulence in box, over 5 seconds for example (or 1% per half second)
