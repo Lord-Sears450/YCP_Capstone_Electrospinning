@@ -511,6 +511,281 @@ def init_GUI():
         wind_max_units.grid(row = 0, column = 5)
         ## End Air Speed / Wind ##
         
+        ## Set Duty Popup
+        def set_duty_popup():
+            set_duty_popup = tk.Tk()
+            set_duty_popup.geometry(f"{popup_width}x{popup_height}")
+            set_duty_popup.overrideredirect(True)
+            set_duty_popup.wm_sizefrom()
+            center(set_duty_popup)
+            set_duty_popup.title("Set Duty Ranges")
+            set_duty_popup.columnconfigure(0, weight = 1)
+            set_duty_popup.columnconfigure(1, weight = 1)
+            set_duty_popup.columnconfigure(2, weight = 1)
+            set_duty_popup.columnconfigure(3, weight = 1)
+            set_duty_popup.rowconfigure(0, weight = 1)
+            set_duty_popup.rowconfigure(1, weight = 2) ## temperature
+            set_duty_popup.rowconfigure(2, weight = 1)
+            set_duty_popup.rowconfigure(3, weight = 2) ## humidity
+            set_duty_popup.rowconfigure(4, weight = 1)
+            
+            ## Intake ##
+            intake = create_widget(set_duty_popup,
+                            tk.Frame,
+                            bg="lightgrey", 
+                            width = 50,
+                            height = 10,
+                            bd = 3)
+            intake.grid(row = 1, column = 0)
+            intake_max_label = create_widget(intake,
+                                tk.Label,
+                                text = "Set Max Intake Duty:",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 20,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+            intake_max_label.grid(row = 0, column = 0)
+            intake_min_label = create_widget(intake,
+                                tk.Label,
+                                text = "Set Min Intake Duty:",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 20,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+            intake_min_label.grid(row = 0, column = 3)
+            ## Intake Set
+            intake_max = IntVar(intake)
+            intake_min = IntVar(intake)
+            intake_max.set(50)
+            intake_min.set(10)
+            def update_intake():
+                intake_min_upper = int(intake_max_box.get()) - 1
+                intake_min_box.config(to = intake_min_upper)
+                intake_max_lower = int(intake_min_box.get()) + 1
+                intake_max_box.config(from_ = intake_max_lower)
+            intake_max_box = create_widget(intake,
+                            tk.Spinbox,
+                            from_ = 10,
+                            to = 100,
+                            textvariable = intake_max,
+                            command = update_intake,
+                            width = 10,
+                            relief = "sunken",
+                            font=("Arial", 24), 
+                            bg="lightgrey", 
+                            fg="blue",
+                            state="normal",
+                            repeatdelay = 500,
+                            repeatinterval = 100, 
+                            cursor="hand2", 
+                            bd=3, 
+                            justify="center", 
+                            wrap=True)
+            intake_max_box.grid(row = 0, column = 1)
+            intake_min_box = create_widget(intake,
+                            tk.Spinbox,
+                            from_ = 10,
+                            to = 100,
+                            textvariable = intake_min,
+                            command = update_intake,
+                            width = 10,
+                            relief = "sunken",
+                            font=("Arial", 24), 
+                            bg="lightgrey", 
+                            fg="blue",
+                            state="normal", 
+                            cursor="hand2", 
+                            bd=3, 
+                            justify="center", 
+                            wrap=True)
+            intake_min_box.grid(row = 0, column = 4)
+            intake_min_units = create_widget(intake,
+                                tk.Label,
+                                text = "%",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+            intake_max_units = create_widget(intake,
+                                tk.Label,
+                                text = "%",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+            intake_min_units.grid(row = 0, column = 2)
+            intake_max_units.grid(row = 0, column = 5)
+            ## End Intake ##
+            
+            ## Exhaust ##
+            exhaust = create_widget(set_duty_popup,
+                            tk.Frame,
+                            bg="lightgrey", 
+                            width = 50,
+                            height = 10,
+                            bd = 3)
+            exhaust.grid(row = 3, column = 0)
+            exhaust_max_label = create_widget(exhaust,
+                                tk.Label,
+                                text = "Set Max Exhaust Duty:",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 20,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+            exhaust_max_label.grid(row = 0, column = 0)
+            exhaust_min_label = create_widget(exhaust,
+                                tk.Label,
+                                text = "Set Min Exhaust Duty:",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 20,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+            exhaust_min_label.grid(row = 0, column = 3)
+            ## exhaust Set
+            exhaust_max = IntVar(intake)
+            exhaust_min = IntVar(intake)
+            exhaust_max.set(50)
+            exhaust_min.set(10)
+            def update_exhaust():
+                exhaust_min_upper = int(exhaust_max_box.get()) - 1
+                exhaust_min_box.config(to = exhaust_min_upper)
+                exhaust_max_lower = int(exhaust_min_box.get()) + 1
+                exhaust_max_box.config(from_ = exhaust_max_lower)
+            exhaust_max_box = create_widget(exhaust,
+                            tk.Spinbox,
+                            from_ = 10,
+                            to = 100,
+                            textvariable = exhaust_max,
+                            command = update_exhaust,
+                            width = 10,
+                            relief = "sunken",
+                            font=("Arial", 24), 
+                            bg="lightgrey", 
+                            fg="blue",
+                            state="normal",
+                            repeatdelay = 500,
+                            repeatinterval = 100, 
+                            cursor="hand2", 
+                            bd=3, 
+                            justify="center", 
+                            wrap=True)
+            exhaust_max_box.grid(row = 0, column = 1)
+            exhaust_min_box = create_widget(exhaust,
+                            tk.Spinbox,
+                            from_ = 10,
+                            to = 100,
+                            textvariable = exhaust_min,
+                            command = update_exhaust,
+                            width = 10,
+                            relief = "sunken",
+                            font=("Arial", 24), 
+                            bg="lightgrey", 
+                            fg="blue",
+                            state="normal", 
+                            cursor="hand2", 
+                            bd=3, 
+                            justify="center", 
+                            wrap=True)
+            exhaust_min_box.grid(row = 0, column = 4)
+            exhaust_min_units = create_widget(exhaust,
+                                tk.Label,
+                                text = "%",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+            exhaust_max_units = create_widget(exhaust,
+                                tk.Label,
+                                text = "%",
+                                font=("Arial", 12),
+                                bg="lightgrey", 
+                                width = 2,
+                                justify = "center",
+                                padx = 5,
+                                pady = 5,
+                                wrap = False)
+            exhaust_min_units.grid(row = 0, column = 2)
+            exhaust_max_units.grid(row = 0, column = 5)
+            ## End Exhaust ##
+            def set_duty_range():
+                globalVar.intake_min = intake_min_box.get()
+                globalVar.intake_max = intake_max_box.get()
+                globalVar.exhaust_min = exhaust_min_box.get()
+                globalVar.exhaust_max = exhaust_max_box.get()
+                set_duty_popup.destroy()
+            set_duty_range_button = create_widget(set_duty_popup,
+                        tk.Button,
+                        text = 'Set Duty Ranges',
+                        command = set_duty_range,
+                        activebackground = 'red',
+                        activeforeground = 'white',
+                        anchor = CENTER,
+                        bd = 3,
+                        bg = 'lightgray',
+                        cursor = 'hand2',
+                        disabledforeground = 'gray',
+                        fg = 'black',
+                        font = ('Arial', 12),
+                        height = 2,
+                        highlightbackground = 'black',
+                        highlightcolor = 'green',
+                        highlightthickness = 2,
+                        justify = CENTER,
+                        overrelief = RAISED,
+                        padx = 10,
+                        pady =5,
+                        width = 15,
+                        wraplength = 100)
+            # set duty range button placement
+            set_duty_range_button.grid(row = 1, column = 3)
+        set_duty_range_button = create_widget(set_range_popup,
+                                    tk.Button,
+                                    text = 'Set Duty Range',
+                                    command = set_duty_popup,
+                                    activebackground = 'red',
+                                    activeforeground = 'white',
+                                    anchor = CENTER,
+                                    bd = 3,
+                                    bg = 'lightgray',
+                                    cursor = 'hand2',
+                                    disabledforeground = 'gray',
+                                    fg = 'black',
+                                    font = ('Arial', 12),
+                                    height = 2,
+                                    highlightbackground = 'black',
+                                    highlightcolor = 'green',
+                                    highlightthickness = 2,
+                                    justify = CENTER,
+                                    overrelief = RAISED,
+                                    padx = 10,
+                                    pady =5,
+                                    width = 10,
+                                    wraplength = 100)
+        # set button placement
+        set_duty_range_button.grid(row = 7, column = 3)
+        ## End Set Duty Popup ##
+        
         def set_range():
             globalVar.temp_max = temp_max_box.get()
             globalVar.temp_min = temp_min_box.get()
@@ -738,9 +1013,9 @@ def init_GUI():
         clock.config(text = time_string)
         clock.after(1000, time)
     clock = create_widget(GUI,
-                          tk.Label,
-                          font = ("Arial", 16, 'bold'),
-                          foreground = 'black')
+                        tk.Label,
+                        font = ("Arial", 16, 'bold'),
+                        foreground = 'black')
     clock.grid(row = 0, column = 2)
     time()
     ## end world clock #
@@ -755,18 +1030,18 @@ def init_GUI():
         read_sensor.readPHT()
         sensor_hum.after(2000, humidity)
     sensor_hum = create_widget(GUI,
-                               tk.Label,
-                               textvariable = humidity_text,
-                               font = ('Arial', 16, 'bold'),
-                               fg = 'black',
-                               bg = 'lightblue',
-                               bd = 3,
-                               height = 2,
-                               width = 22,
-                               highlightthickness = 2,
-                               highlightbackground = 'black',
-                               anchor = W,
-                               padx = 15)
+                            tk.Label,
+                            textvariable = humidity_text,
+                            font = ('Arial', 16, 'bold'),
+                            fg = 'black',
+                            bg = 'lightblue',
+                            bd = 3,
+                            height = 2,
+                            width = 22,
+                            highlightthickness = 2,
+                            highlightbackground = 'black',
+                            anchor = W,
+                            padx = 15)
     sensor_hum.grid(row = 1, column = 4)
     humidity()
     ## end humidity ##

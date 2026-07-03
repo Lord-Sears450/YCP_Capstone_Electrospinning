@@ -5,12 +5,21 @@ startTime = 0
 ## PWM vals
 global duty_intake
 global intake
+global intake_max
+global intake_min
 duty_intake = 20
+intake_max = 100
+intake_min = 10
 intake = 1800 * (duty_intake/100)   # converts PWM to RPM
 global duty_exhaust
 global exhaust
+global exhaust_max
+global exhaust_min
 duty_exhaust = 30
+exhaust_max = 100
+exhaust_min = 10
 exhaust = 1800 * (duty_exhaust/100) # converts PWM to RPM
+
 
 ## sensor vals
 global temp_max
