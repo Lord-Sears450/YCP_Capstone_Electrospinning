@@ -1,12 +1,12 @@
 from time import sleep 
 from time import strftime
-# import board
-# import busio
-# from adafruit_ms8607 import MS8607
+import board
+import busio
+from adafruit_ms8607 import MS8607
 import globalVar
 
-# i2c = busio.I2C(board.SCL, board.SDA)
-# sensor = MS8607(i2c)
+i2c = busio.I2C(board.SCL, board.SDA)
+sensor = MS8607(i2c)
 
 def readPHT():
 	globalVar.press = sensor.pressure
@@ -18,14 +18,18 @@ def readPHT():
 	# globalVar.hum = 78.58
 	globalVar.wind = 8.72	# placeholder value until anenometer is working
 	
-	sensorValsHigh = globalVar.temp >= globalVar.exhaust_max or globalVar.hum >= globalVar.exhaust_max or globalVar.press >= globalVar.exhaust_max
-	sensorValsLow = globalVar.temp <= globalVar.exhaust_min or globalVar.hum <= globalVar.exhaust_min or globalVar.press <= globalVar.exhaust_min
+	sensorValsHigh = globalVar.temp >= globalVar.temp_max or globalVar.hum >= globalVar.hum_max or globalVar.press >= globalVar.press_max
+	sensorValsLow = globalVar.temp <= globalVar.temp_min or globalVar.hum <= globalVar.hum_min or globalVar.press <= globalVar.press_min
 	if (sensorValsHigh == True):
-		globalVar.duty_exhaust += 1
-		globalVar.duty_intake += 1
+		if (globalVar.duty_exhaust < globalVar.exhaust_max):
+			globalVar.duty_exhaust += 1
+		if (globalVar.duty_intake < globalVar.intake_max):
+			globalVar.duty_intake += 1
 	elif (sensorValsLow == True):
-		globalVar.duty_exhaust -= 1
-		globalVar.duty_intake -= 1
+		if (globalVar.duty_exhaust > globalVar.exhaust_min):
+			globalVar.duty_exhaust -= 1
+		if (globalVar.duty_intake > globalVar.intake_min):
+			globalVar.duty_intake -= 1
  
 	# prints timestamp and sensor values in test log
 	timestamp = strftime('%H:%M:%S %p')
